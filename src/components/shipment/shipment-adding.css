@@ -1,0 +1,13 @@
+#fedex-form{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 15px;
+    padding: 2%;
+}
+#fedex-submit{
+    margin-right: 85%;
+}
+#fedexid{
+    margin-right: 20px;
+}

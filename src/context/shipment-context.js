@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
 import cookie from 'react-cookies';
-
+import { useState } from "react";
 const api = " http://localhost:3010";
 
 export const ShipmentContext = React.createContext();
 export default function Shipment(props) {
+const [status,setStatus] = useState(0)
     //fedex shipments
     const createShipmentFedex = async (FedExID, carrierServiceID, width, height, length, weight) => {
         axios.post(`${api}/fedexCreate/${cookie.load('userId')}`, {
@@ -21,19 +22,12 @@ export default function Shipment(props) {
             }
         }).then(res => {
             console.log(res.data)
+            console.log(res.status)
+            setStatus(res.status)
         })
 
     }
-    // getting fedex shipments for a user
-    const getShipmentsFedexForUser = async () => {
-        axios.get(`${api}/getallshipmentfedex/${cookie.load('userId')}`, {
-            headers: {
-                'Authorization': `Bearer ${cookie.load("token")}`
-            }
-        }).then(res => {
-            console.log(res.data);
-        })
-    }
+
     // create ups shipments 
     const createShipmentUps = async (UPSID, shipmentServiceID, width, height, length, weight) => {
         axios.post(`${api}/upsCreate/${cookie.load('userId')}`, {
@@ -51,22 +45,12 @@ export default function Shipment(props) {
             console.log(res.data);
         })
     }
-    // get ups shipments for the user
-
-    const getShipmentsUpsForUser = async () => {
-        axios.get(`${api}/getallshipmentups/${cookie.load('userId')}`, {
-            headers: {
-                'Authorization': `Bearer ${cookie.load("token")}`
-            }
-        }).then(res => {
-            console.log(res.data)
-        })
-    }
+   
     const state = {
         createShipmentFedex,
-        getShipmentsFedexForUser,
         createShipmentUps,
-        getShipmentsUpsForUser,
+        status,
+
     }
     return (
         <ShipmentContext.Provider value={state}>

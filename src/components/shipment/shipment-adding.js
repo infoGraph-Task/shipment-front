@@ -8,8 +8,23 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
 import { ShipmentContext } from '../../context/shipment-context';
 import './shipment-adding.css'
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 const currencies = [
     {
         value: 'fedexAIR',
@@ -32,9 +47,9 @@ const currencies2 = [
 ];
 
 export default function ShipmentComponent() {
+
     const authContext = useContext(AuthContext)
     const shipmentContext = useContext(ShipmentContext)
-    // const [UPSID,setUPSID]=useState('')
     const [carrierServiceID, setcarrierServiceID] = useState('')
     const [widthFedex, setWidthFedex] = useState(0)
     const [heightFedex, setHeightFedex] = useState(0)
@@ -46,15 +61,19 @@ export default function ShipmentComponent() {
     const [heightUps, setHeightUps] = useState(0)
     const [lengthUps, setLengthUps] = useState(0)
     const [weightUps, setWeightUps] = useState(0)
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const handleSubmitFedex = (e) => {
         e.preventDefault();
-        console.log('fedex', carrierServiceID, widthFedex, heightFedex, lengthFedex, weightFedex)
         shipmentContext.createShipmentFedex('fedex', carrierServiceID, widthFedex, heightFedex, lengthFedex, weightFedex)
     }
     const handleSubmitUps = (e) => {
         e.preventDefault();
         shipmentContext.createShipmentUps('ups', shipmentServiceID, widthUps, heightUps, lengthUps, weightUps)
     }
+
     return (
 
         <When condition={authContext.isLoggedIn}>
@@ -62,7 +81,30 @@ export default function ShipmentComponent() {
                 <h1 id='fedexid'>
                     FedEx
                 </h1>
+                <div>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <When condition={shipmentContext.status == '201'}>
+                                    Shipment added successfully
+                                </When>
 
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <When condition={shipmentContext.status != '201'}>
+                                  Shipment is not added , please Enter Valid input
+                                </When>
+
+                            </Typography>
+
+                        </Box>
+                    </Modal>
+                </div>
                 <Box component="form" noValidate onSubmit={handleSubmitFedex} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <TextField style={{ marginTop: '10px' }}
                         id="outlined-select-currency"
@@ -137,9 +179,10 @@ export default function ShipmentComponent() {
 
 
                     <div id='fedex-submit'>
-                        <Button variant="contained" disableElevation type='submit'>
+                        <Button onClick={handleOpen} variant="contained" disableElevation type='submit'>
                             create shipment
                         </Button>
+
                     </div>
                 </Box>
             </div>
@@ -149,6 +192,30 @@ export default function ShipmentComponent() {
                 <h1 id='fedexid'>
                     UPS
                 </h1>
+                <div>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <When condition={shipmentContext.status == '201'}>
+                                  Shipment added successfully
+                                </When>
+
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <When condition={shipmentContext.status != '201'}>
+                                    Shipment is not added , please Enter Valid input
+                                </When>
+
+                            </Typography>
+
+                        </Box>
+                    </Modal>
+                </div>
 
                 <Box component="form" noValidate onSubmit={handleSubmitUps} sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <TextField style={{ marginTop: '10px' }}
@@ -228,7 +295,7 @@ export default function ShipmentComponent() {
 
 
                     <div id='fedex-submit'>
-                        <Button type='submit' variant="contained" disableElevation>
+                        <Button onClick={handleOpen} type='submit' variant="contained" disableElevation>
                             create shipment
                         </Button>
                     </div>

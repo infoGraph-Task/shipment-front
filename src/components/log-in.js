@@ -40,7 +40,7 @@ export default function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password,authcontext.signIn)
+    console.log(username, password, authcontext.signIn)
     authcontext.signIn(username, password)
   };
 
@@ -70,7 +70,6 @@ export default function SignIn() {
               id="username"
               label="user name"
               name="username"
-              //   autoComplete="email"
               onChange={(e) => {
                 setUserName(e.target.value)
               }}
@@ -97,16 +96,12 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              
+
             >
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+
               <Grid item>
                 <Link to={"/signup"} variant="body2">
                   {"Don't have an account? Sign Up"}

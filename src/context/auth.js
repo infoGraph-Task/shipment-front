@@ -12,7 +12,7 @@ export default function Auth(props) {
 
     const [user, setUser] = useState({});
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+    const [status, setStatus] = useState(0)
 
     const signUp = async (username, password, email, mobileNumber) => {
         axios.post(`${api}/signup/users`, {
@@ -30,19 +30,20 @@ export default function Auth(props) {
             username: username,
             password: password
         }, { headers: { 'Authorization': `Basic ${base64.encode(`${username}:${password}`)}` } }).then(res => {
-            console.log('im alive')
-            console.log(res)
             tokenChecker(res.data)
+            setStatus(res.status)
         });
     }
     const signOut = () => {
         setIsLoggedIn(false)
         setUser({})
-        cookie.remove('user')
+        cookie.remove('userId')
+        cookie.remove('token')
+
     };
 
 
-    const tokenChecker =(user)=> {
+    const tokenChecker = (user) => {
         if (user) {
             const validUser = JWT(user.token)
             if (validUser) {
@@ -68,6 +69,8 @@ export default function Auth(props) {
         setUser,
         user,
         isLoggedIn,
+        status,
+
 
     }
 

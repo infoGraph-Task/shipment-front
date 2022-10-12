@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import { useNavigate } from "react-router-dom";
 
-const api = " http://localhost:3010";
+const api = 'https://infogragh-shpment.herokuapp.com';
 
 export default function ViewUps() {
     const [shipmentsUps, setShipmentUps] = useState([])

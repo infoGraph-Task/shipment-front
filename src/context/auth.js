@@ -5,7 +5,7 @@ import cookie from 'react-cookies';
 import base64 from 'base-64';
 
 
-const api = " http://localhost:3010"
+const api = 'https://infogragh-shpment.herokuapp.com'
 //creating the context autherization api
 export const AuthContext = React.createContext();
 export default function Auth(props) {

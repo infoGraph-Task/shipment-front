@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import cookie from 'react-cookies';
 import { useState } from "react";
-const api = " http://localhost:3010";
+const api = 'https://infogragh-shpment.herokuapp.com';
 
 export const ShipmentContext = React.createContext();
 export default function Shipment(props) {
